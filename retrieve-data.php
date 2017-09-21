@@ -14,6 +14,7 @@
         $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
         $query = 'DROP TABLE IF EXISTS restaurant;
+        
                   CREATE TABLE restaurant (
                   owner varchar(80),
                   category varchar(80),
