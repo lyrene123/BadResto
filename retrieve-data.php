@@ -14,17 +14,16 @@
   function createTables(){
     include('PDOConnection.php'); //file containing credentials
     try{
-        $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName",$user,$password);
+        $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName;port=$port;sslmode=require",$user,$password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
         $query = 'DROP TABLE IF EXISTS restaurant;
-
                   CREATE TABLE restaurant (
+                  id SERIAL UNIQUE,
                   owner varchar(80),
                   category varchar(80),
                   establishment varchar(80),
                   address varchar(80),
-                  city_postal varchar(60) NOT NULL primary key,
+                  city_postal varchar(60),
                   lat numeric,
                   long numeric);';
         $pdo->exec($query);
@@ -118,10 +117,6 @@
     */
     function addRecord($owner, $cat, $establish, $address, $city, $lat, $long){
       include('PDOConnection.php');
-      $isDuplicate = checkDuplicates($city);
-
-      //if no duplicates, add record
-      if(!$isDuplicate){
         try{
           $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName",$user,$password);
           $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
@@ -141,32 +136,5 @@
         } finally {
           unset($pdo);
         }
-      }
     }
-
-    /*
-      function to check if a restaurant already exists in the database by
-      returning true if duplicates found or false if none found
-    */
-    function checkDuplicates($citypostal){
-      include('PDOConnection.php');
-      try{
-        $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName",$user,$password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
-        $query = $pdo->prepare("SELECT * FROM restaurant WHERE city_postal = ?;");
-        $query->bindParam(1, $citypostal);
-        $query->execute();
-
-        if($query->rowCount() > 0){
-          return true; //duplicates existing
-        }else{
-          return false; //no duplicates
-        }
-      } catch (PDOException $e){
-        echo $e->getMessage();
-      } finally {
-       unset($pdo);
-      }
-  	}
 ?>
