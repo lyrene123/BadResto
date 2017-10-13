@@ -46,8 +46,9 @@ function getError(error) {   //geolocation was not successful
 }
 
 function treatError() {   //geolocation was not successful
-    //document.forms['hiddenForm'].elements['error'].value = '1';
-
+  if(document.forms['hiddenForm'].elements['error'].value.length == 0 ){
+    document.forms['hiddenForm'].elements['error'].value = '1';
+  }
    //submit form with error
    document.forms['hiddenForm'].submit();
 }
