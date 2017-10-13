@@ -17,7 +17,7 @@
     if(isset($_POST['latitude']) && isset($_POST['longitude'])){
       $inputLat = $_POST['latitude'];
       $inputLong = $_POST['longitude'];
-      if(is_float($inputLat) && is_float($inputLong)){
+      if(is_numeric($inputLat) && is_numeric($inputLong)){
         $userLat = $_POST['latitude'];
         $userLng = $_POST['longitude'];
         include_once("map.php");
