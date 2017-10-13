@@ -7,7 +7,7 @@
       case 4: echo 'System Unresponsive!'; break;
       case 5: echo 'Unknown Error!'; break;
       case 6: echo 'Something bad happened!'; break;
-      case 7: echo 'Cannot retrieve your current location';
+      case 7: echo 'Cannot retrieve your current location'; break;
       default: echo 'Service is not Available!';
     }
   }
