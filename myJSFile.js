@@ -13,20 +13,19 @@ function getLocation() {
 
 function getPosition(position) {
     //set coordinates in hidden fields and submit
-    if (position.coords.accuracy > 10000) { 
+    if (position.coords.accuracy > 10000) {
         //location is not accurate with 10 km, large error is possible on desktops
         treatError();
     } else {
         document.forms['hiddenForm'].elements['latitude'].value = position.coords.latitude;
         document.forms['hiddenForm'].elements['longitude'].value = position.coords.longitude;
-        
-        //submit form with geolocation info 
-        document.forms['hiddenForm'].submit(); 
-    } 
+
+        //submit form with geolocation info
+        document.forms['hiddenForm'].submit();
+    }
 }
 
 function getError(error) {   //geolocation was not successful
-    
     switch(error.code) {
         case error.PERMISSION_DENIED:
             document.forms['hiddenForm'].elements['error'].value = '2';
@@ -43,12 +42,13 @@ function getError(error) {   //geolocation was not successful
         default:
             document.forms['hiddenForm'].elements['error'].value = '1';
     }
+    treatError();
 }
 
 function treatError() {   //geolocation was not successful
-    document.forms['hiddenForm'].elements['error'].value = '1';
-	
-   //submit form with error 
-   document.forms['hiddenForm'].submit(); 
+    //document.forms['hiddenForm'].elements['error'].value = '1';
+
+   //submit form with error
+   document.forms['hiddenForm'].submit();
 }
 window.onload = init;

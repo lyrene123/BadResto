@@ -2,11 +2,6 @@
   //run the script by creating table and filling it with data
   createTables();
   fillTables();
-?>
-
-
-
-<?php
 
   /*
     function that drops and re-creates the restaurant table on the database
@@ -48,7 +43,6 @@
       //retrieve all restaurant element and loop through each one of them
       $items = @$xml->getElementsByTagName('contrevenant');
       foreach ($items as $resto) {
-
         //get the necessary info for each restaurant
         $owner = $resto->getElementsByTagName('proprietaire')[0]->textContent;
         $category = $resto->getElementsByTagName('categorie')[0]->textContent;
@@ -67,7 +61,6 @@
           $lat = 0.0000;
           $long = 0.0000;
         }
-
         //add each record in the database
         addRecord($owner,$category,$establish,$address,$city,$lat,$long);
       }
@@ -120,7 +113,6 @@
         try{
           $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName",$user,$password);
           $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
           $query = $pdo->prepare("INSERT INTO restaurant(owner,category,establishment,address,city_postal,lat,long) VALUES
                     (?,?,?,?,?,?,?);");
           $query->bindParam(1,$owner);
