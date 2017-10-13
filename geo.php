@@ -15,11 +15,19 @@
 
     //the following will validate the lat and long of the user
     if(isset($_POST['latitude']) && isset($_POST['longitude'])){
-      $userLat = $_POST['latitude'];
-      $userLng = $_POST['longitude'];
-      include_once("map.php");
+      $inputLat = $_POST['latitude'];
+      $inputLong = $_POST['longitude'];
+      if(is_float($inputLat) && is_float($inputLong)){
+        $userLat = $_POST['latitude'];
+        $userLng = $_POST['longitude'];
+        include_once("map.php");
+      } else {
+        //if lat and long not valid, error code is 7
+        header("location:error.php?error=7");
+        exit;
+      }
     } else {
-      //if lat and long not valid or not existing, error code is 7
+      //if lat and long not existing, error code is 7
       header("location:error.php?error=7");
       exit;
     }
