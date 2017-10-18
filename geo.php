@@ -1,4 +1,10 @@
 <?php
+  /**
+  * The following script handles the submit action of the form in the index page
+  * by checking if the form has been submitted through POST and if not, redirect
+  * to the index page. The script will then handle the validation of the form's
+  * input and then display the map only if the latitude and longitude are valid.
+  */
   if($_SERVER['REQUEST_METHOD'] == 'POST'){
     //the following will check if the form contains any valid error code
     if(isset($_POST['error']) && ($_POST['error'] >= 1 && $_POST['error'] <= 5)){

@@ -35,7 +35,41 @@
       <div id="resto_info">
         <ul id="listRestos"></ul>
         <script type="text/javascript">
-          <?php include_once("bad_resto_script.php"); ?>
+          function initMap() {
+            <?php echo "var user = {lat: $userLat , lng: $userLng };"; ?>
+              var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 14,
+                        center: user
+                      });
+            <?php
+              //create an instance of the DbManager and call the findClosestRestos function
+              require_once('DbManager.php');
+              $manager = new DbManager();
+              $badrestos = $manager->findClosestRestos($userLat, $userLng);
+
+              //display each resto found on the map
+              if(count($badrestos) != 0){
+                foreach( $badrestos as $row) {
+                  $lat = $row['lat'];
+                  $lng = $row['long'];
+                  $establishment = $row['establishment'];
+                  echo "var marker = new google.maps.Marker({
+                        position: { lat: $lat, lng: $lng },
+                        map: map,
+                        title: '$establishment'
+                      });";
+                  }
+                }
+              ?>
+            }
+            var list = document.getElementById('listRestos');
+            list.innerHTML = "<?php
+                            foreach($badrestos as $row) {
+                              echo '<li>' . $row['establishment'] . '<\/li>';
+                            }
+                          ?>";
+            var msg = document.getElementById('message');
+            msg.innerHTML = "<?php  echo ((count($badrestos)===0)?'You can eat anywhere!':'Avoid these restaurants!') ?>";
         </script>
       </div>
     </div>
