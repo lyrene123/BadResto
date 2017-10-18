@@ -33,10 +33,11 @@
 
     <div class="col-sm-2 bg-white">
       <div id="resto_info">
-        <ul id="listRestos"></ul>
+        <ul id="listRestos" class="list-group">
         <script type="text/javascript">
           <?php include_once("bad_resto_script.php"); ?>
         </script>
+        </ul>
       </div>
     </div>
   </div>

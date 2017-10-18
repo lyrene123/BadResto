@@ -51,7 +51,8 @@ function initMap() {
 var list = document.getElementById('listRestos');
 list.innerHTML = "<?php
                     foreach($badrestos as $row) {
-                      echo '<li>' . $row['establishment'] . '<\/li>';
+                      echo '<li class=\"list-item list-item-danger\">' .
+                          '<img src=\"radioactive_icon.png\" align=\"left\">'. $row['establishment'] . '</li>';
                     }
                   ?>";
 var msg = document.getElementById('message');
