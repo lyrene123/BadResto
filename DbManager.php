@@ -18,7 +18,8 @@
     * table on the database.
     */
     public function createTables(){
-      require_once('PDOConnection.php'); //file containing credentials
+      echo "creating restaurant table";
+      require('PDOConnection.php'); //file containing credentials
       try{
           $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName;port=$port;sslmode=require",$user,$password);
           $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
@@ -45,6 +46,7 @@
       * stores record in the database, in the restaurant table
       */
       public function fillTables(){
+        echo "\nfilling up restaurant table";
         //retrieve Montreal site into XML form
         $url = "http://donnees.ville.montreal.qc.ca/dataset/a5c1f0b9-261f-4247-99d8-f28da5000688/resource/92719d9b-8bf2-4dfd-b8e0-1021ffcaee2f/download/inspection-aliments-contrevenants.xml";
         $results = file_get_contents($url);
@@ -89,17 +91,20 @@
       * @param string $address The address which we want to get the lat and long
       * @return an array containing lat and long of the address or false if not found
       */
-      private function getGeoLocation($address){
+      public function getGeoLocation($address){
+        echo "\ngetting geo location";
         //send the request and retrieve the result as XML
         $address = urlencode($address);
-        $urlMap = "http://maps.google.com/maps/api/geocode/xml?address={$address}&sensor=false";
+        $urlMap = "https://maps.googleapis.com/maps/api/geocode/xml?address={$address}&key=AIzaSyDTCIru6k5B1wHtyR1vJ-LOunHzw_5SjiM";
         $rsp = file_get_contents($urlMap);
         $rspXML = new \DOMDocument();
         @$rspXML->loadXML($rsp);
 
         //if status of response if OK, get the longitude and latitude
         $status = @$rspXML->getElementsByTagName('status')[0]->textContent;
+        echo "\nstatus: $status";
         if($status == 'OK'){
+          echo "\nrequest received";
           $lat = @$rspXML->getElementsByTagName('result')[0]
                         ->getElementsByTagName('geometry')[0]
                         ->getElementsByTagName('location')[0]
@@ -112,6 +117,7 @@
 
           //return longtitude and latitude as an array or false if none found
           if($lat && $long){
+            echo "Found : $lat and $long";
             $location = array();
             array_push($location,$lat,$long);
             return $location;
@@ -134,8 +140,8 @@
       * @param string $lat The latitude of the restaurant
       * @param string $long The longitude of the restaurant
       */
-      private function addRecord($owner, $cat, $establish, $address, $city, $lat, $long){
-        require_once('PDOConnection.php'); //file containing credentials
+      public function addRecord($owner, $cat, $establish, $address, $city, $lat, $long){
+        require('PDOConnection.php'); //file containing credentials
           try{
             $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName",$user,$password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
@@ -164,8 +170,8 @@
       * @param float $currentLat The latitude of the position of the user
       * @param float $currentLng The longitude of the position of the user
       */
-      function findClosestRestos($currentLat, $currentLng){
-        require_once('PDOConnection.php');
+      public function findClosestRestos($currentLat, $currentLng){
+        require('PDOConnection.php');
         try{
           $pdo=new PDO("pgsql:dbname=$dbname;host=$serverName;port=$port;sslmode=require",$user,$password);
           $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);

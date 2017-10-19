@@ -1,4 +1,8 @@
 <?php
+  /**
+  * The following script will handle the error messages for different error
+  * that occur depending on the number passed to the query string
+  */
   if(isset($_GET['error']) && is_numeric($_GET['error'])){
     $errCode = $_GET['error'];
     switch($errCode) {

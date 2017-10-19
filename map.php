@@ -33,12 +33,12 @@
 
     <div class="col-sm-2 bg-white">
       <div id="resto_info">
-        <ul id="listRestos"></ul>
+        <ul id="listRestos" class="list-group">
         <script type="text/javascript">
           function initMap() {
             <?php echo "var user = {lat: $userLat , lng: $userLng };"; ?>
               var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 14,
+                        zoom: 15,
                         center: user
                       });
             <?php
@@ -47,14 +47,16 @@
               $manager = new DbManager();
               $badrestos = $manager->findClosestRestos($userLat, $userLng);
 
-              //display each resto found on the map
+              //display each resto found on the map if there are restos found
               if(count($badrestos) != 0){
+              //  $count = count($badrestos);
+              //  echo "the count is $count";
                 foreach( $badrestos as $row) {
                   $lat = $row['lat'];
                   $lng = $row['long'];
                   $establishment = $row['establishment'];
                   echo "var marker = new google.maps.Marker({
-                        position: { lat: $lat, lng: $lng },
+                        position: { lat:$lat, lng:$lng },
                         map: map,
                         title: '$establishment'
                       });";
@@ -62,15 +64,19 @@
                 }
               ?>
             }
+            //list on the side of the map the names of the restaurants as a list
             var list = document.getElementById('listRestos');
             list.innerHTML = "<?php
-                            foreach($badrestos as $row) {
-                              echo '<li>' . $row['establishment'] . '<\/li>';
-                            }
-                          ?>";
+                                foreach($badrestos as $row) {
+                                  echo '<li class=\"list-item list-item-danger\">' .
+                                      '<img src=\"radioactive_icon.png\" align=\"left\">'. $row['establishment'] . '</li>';
+                                }
+                              ?>";
+            //display the message to avoid these restos if there are, if none found, display another message
             var msg = document.getElementById('message');
             msg.innerHTML = "<?php  echo ((count($badrestos)===0)?'You can eat anywhere!':'Avoid these restaurants!') ?>";
         </script>
+        </ul>
       </div>
     </div>
   </div>

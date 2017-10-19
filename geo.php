@@ -26,6 +26,7 @@
       if(is_numeric($inputLat) && is_numeric($inputLong)){
         $userLat = $_POST['latitude'];
         $userLng = $_POST['longitude'];
+        //at this point, the latitude and longitude are validated, so display map
         include_once("map.php");
       } else {
         //if lat and long not valid, error code is 7
