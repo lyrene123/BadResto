@@ -55,6 +55,7 @@
                   $lat = $row['lat'];
                   $lng = $row['long'];
                   $establishment = $row['establishment'];
+                  $establishment = addslashes($establishment);
                   echo "var marker = new google.maps.Marker({
                         position: { lat:$lat, lng:$lng },
                         map: map,
