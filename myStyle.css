@@ -78,5 +78,18 @@ header, footer {
     border: 1px solid #ddd;
 }
 	
-
-
+.pos-bottom{
+	position: absolute;
+	bottom: 0;
+}
+.pos-center {
+    position: absolute;
+    top: 30%;
+    /* bottom: 0; */
+    left: 35%;
+    /* right: 0; */
+    width: 50%;
+}
+.text-50 {
+	font-size: 50px;
+}
